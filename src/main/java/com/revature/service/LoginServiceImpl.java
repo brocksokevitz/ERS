@@ -83,7 +83,10 @@ public class LoginServiceImpl implements LoginService {
 				resp.sendRedirect(req.getContextPath());
 				return "/index?faces-redirect=true";
 			} else if (req.getParameter("button").equals("registerSubmit")) {
-				attempting = loginService.insertUser(username, email, password);
+				User user = loginService.insertUser(username, email, password);
+				if(user == null) {
+					success = false;
+				}
 			} else if (req.getParameter("button").equals("submit reimbursement")) {
 				
 				final double amount = Double.parseDouble(req.getParameter("amount"));		
@@ -219,10 +222,15 @@ public class LoginServiceImpl implements LoginService {
 			} else {
 				if (req.getParameter("button").equals("register")) {
 					req.getRequestDispatcher("register.jsp").forward(req, resp);
-				} else if (req.getParameter("button").equals("logout") || req.getParameter("button").equals("exit")
-						|| req.getParameter("button").equals("registerSubmit")) {
+				} else if (req.getParameter("button").equals("logout") || req.getParameter("button").equals("exit")) {
 					req.getRequestDispatcher("index.jsp").forward(req, resp);
-				} else {
+				} else if(req.getParameter("button").equals("registerSubmit")){
+					if(success) {
+						req.getRequestDispatcher("index.jsp").forward(req, resp);
+					}else {
+						req.getRequestDispatcher("failedRegister.jsp").forward(req, resp);
+					}
+				}else {
 					log.info(req.getParameter("button"));
 					resp.setStatus(400);
 					req.getRequestDispatcher("incorrectformindex.jsp").forward(req, resp);
@@ -269,7 +277,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public void sendEmail(User employee, User manager, Reimbursement reimbursement, String body) {
+	public boolean sendEmail(User employee, User manager, Reimbursement reimbursement, String body) {
 		String title = "Reimbursement" + reimbursement.getReimbursement_id();
 		
 		String to = employee.getEmail();
@@ -295,13 +303,17 @@ public class LoginServiceImpl implements LoginService {
 			message.setSubject(title);
 			// sending message
 			Transport.send(message);
+			return true;
 		} catch (AddressException e) {
 			// TODO Auto-generated catch block
 			log.error(e.getMessage());
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			log.error(e.getMessage());
+		} catch(NullPointerException e) {
+			log.error(e.getMessage());
 		}
+		return false;
 	}
 
 	@Override

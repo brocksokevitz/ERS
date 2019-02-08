@@ -25,7 +25,7 @@ public interface LoginService {
 
 	List<User> getAllUsers();
 
-	void sendEmail(User employee, User manager, Reimbursement reimbursement, String message);
+	boolean sendEmail(User employee, User manager, Reimbursement reimbursement, String message);
 
 	void uploadFile(String filePath, HttpServletRequest req, int id);
 

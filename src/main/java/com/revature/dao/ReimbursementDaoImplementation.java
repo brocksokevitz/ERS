@@ -57,20 +57,23 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	}
 
 	@Override
-	public boolean deleteReimbursement(int reimbursementId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteAllUsersReimbursements(int userID) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteAllReimbursements() {
-		// TODO Auto-generated method stub
+	public boolean deleteReimbursement(String name) {
+		
+		Connection conn = null;
+		conn = cu.getConnection();
+		
+		try{
+			String sql = "delete from reimbursements where username = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);	
+			ps.setString(1, name);
+			
+			if(ps.executeUpdate() > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			log.error(e.getStackTrace());
+		}
 		return false;
 	}
 
@@ -177,12 +180,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		}
 		return new ArrayList<>();
 	}
-
-	@Override
-	public boolean accountExists(int reimbursementId, int userId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 	@Override
 	public boolean updateReimbursement(int reimbursementId, String status, String manager) {
 		
@@ -278,5 +276,4 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		}
 		return false;
 	}
-
 }

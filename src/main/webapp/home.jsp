@@ -24,7 +24,8 @@ body {
 <div class="mt-5"></div>
 
 <div class="jumbotron container">
-<div class="btn-toolbar" style="width:100%">
+
+<div class="btn-toolbar  d-flex" style="width:100%">
 <form action="/ERS/login" method="POST">
 						<input type="submit" value="Home" name="button"
 							class="list-group-item">

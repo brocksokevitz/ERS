@@ -74,9 +74,13 @@ public class UserDaoImplementation implements UserDao {
 		Connection conn = null;
 		conn = cu.getConnection();
 		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select username from users where username ='"+ username +"'");	
-
+			String sql = "select username from users where username = ?";			
+			PreparedStatement ps;
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			
+			
 			if(rs.next()) {
 			return true;
 			}
@@ -134,7 +138,7 @@ public class UserDaoImplementation implements UserDao {
 			
 			ResultSet results = ps.executeQuery();
 			
-			while (results.next()) {
+			if(results.next()) {
 				return new User(results.getString("username"), results.getString("email"), results.getString("password"), results.getInt("superuser"));
 				
 			}
@@ -145,8 +149,19 @@ public class UserDaoImplementation implements UserDao {
 	}
 
 	@Override
-	public boolean deleteUser(int userID) {
-		// TODO Auto-generated method stub
+	public boolean deleteUser(String username) {
+		Connection conn = null;
+		conn = cu.getConnection();
+		try{
+			CallableStatement cs = conn.prepareCall("call delete_user(?)");	
+			cs.setString(1, username);
+			boolean rs = cs.execute();
+				return rs;
+			
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			log.error(e.getStackTrace());
+		}
 		return false;
 	}
 

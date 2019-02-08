@@ -20,40 +20,37 @@ body {
 
 	<div class="container jumbotron">
 
-		<div class="btn-toolbar d-flex justify-content-center"
-			style="width: 100%">
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="Home" name="button"
-					class="list-group-item">
-			</form>
-
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="Profile" name="button"
-					class="list-group-item">
-			</form>
-
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="logout" name="button"
-					class="list-group-item">
-			</form>
-		</div>
-
-		<div class="btn-toolbar d-flex justify-content-center"
-			style="width: 100%">
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="resolved" name="button"
-					class="list-group-item">
-			</form>
-
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="users" name="button"
-					class="list-group-item">
-			</form>
-			<form action="/ERS/login" method="POST">
-				<input type="submit" value="register user" name="button"
-					class="list-group-item">
-			</form>
-		</div>
+	<div class="btn-toolbar d-flex" style="width:100%">
+	<form action="/ERS/login" method="POST">
+						<input type="submit" value="Home" name="button"
+							class="list-group-item">
+					</form>
+					
+									<form action="/ERS/login" method="POST">
+						<input type="submit" value="Profile" name="button"
+							class="list-group-item">
+					</form>
+					
+					<form action="/ERS/login" method="POST">
+						<input type="submit" value="resolved" name="button"
+							class="list-group-item">
+					</form>
+					
+														<form action="/ERS/login" method="POST">
+						<input type="submit" value="users" name="button"
+							class="list-group-item">
+					</form>	
+										<form action="/ERS/login" method="POST">
+						<input type="submit" value="register user" name="button"
+							class="list-group-item">
+					</form>	
+					
+															<form action="/ERS/login" method="POST">
+						<input type="submit" value="logout" name="button"
+							class="list-group-item">
+					</form>
+</div>
+		
 		<form action="/ERS/login" method="POST">
 			<div class="form-group centered">
 				<label for="email">Email </label> <input type="email" name="email"
