@@ -53,6 +53,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}
@@ -74,6 +76,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}
@@ -99,6 +103,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 			}
 		}catch (Exception e) {
 			log.error(e.getMessage());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new Reimbursement();
 	}
@@ -126,6 +132,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new ArrayList<>();
 	}
@@ -152,6 +160,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new ArrayList<>();
 	}
@@ -178,6 +188,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new ArrayList<>();
 	}
@@ -204,6 +216,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}
@@ -227,6 +241,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 			}
 		}catch (Exception e) {
 			log.error(e);
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 		
@@ -249,6 +265,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return 0;
 	}
@@ -274,6 +292,8 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}

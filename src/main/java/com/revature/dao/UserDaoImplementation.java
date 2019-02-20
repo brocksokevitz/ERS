@@ -60,6 +60,8 @@ public class UserDaoImplementation implements UserDao {
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}
@@ -88,6 +90,8 @@ public class UserDaoImplementation implements UserDao {
 		}catch(SQLException e) {
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		
 		
@@ -120,6 +124,8 @@ public class UserDaoImplementation implements UserDao {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				log.error(e.getMessage());
+			}finally {
+				pool.freeConnection(conn);
 			}
 		return false;
 	}
@@ -145,6 +151,8 @@ public class UserDaoImplementation implements UserDao {
 			}
 		}catch (Exception e) {
 			log.error(e.getMessage());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new User();
 	}
@@ -162,6 +170,8 @@ public class UserDaoImplementation implements UserDao {
 		} catch (SQLException e) {
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return false;
 	}
@@ -184,6 +194,8 @@ public class UserDaoImplementation implements UserDao {
 			// TODO Auto-generated catch block
 			log.error(e.getMessage());
 			log.error(e.getStackTrace());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return new ArrayList<>();
 	}
@@ -232,6 +244,8 @@ public class UserDaoImplementation implements UserDao {
 			}	
 		}catch (Exception e) {
 			log.error(e.getMessage());
+		}finally {
+			pool.freeConnection(conn);
 		}
 		return null;
 	}
