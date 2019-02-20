@@ -14,11 +14,12 @@ import org.apache.log4j.Logger;
 
 import com.revature.model.User;
 import com.revature.utils.ConnectionUtil;
+import com.revature.utils.TomcatConnectionPool;
 
 public class UserDaoImplementation implements UserDao {
 
 	private static UserDaoImplementation userDao;
-	private static ConnectionUtil cu = ConnectionUtil.getInstance();
+	private static TomcatConnectionPool pool = TomcatConnectionPool.getInstance();
 	final static Logger log = Logger.getLogger(UserDaoImplementation.class);
 	
 	private UserDaoImplementation() {
@@ -37,7 +38,7 @@ public class UserDaoImplementation implements UserDao {
 	public boolean insertUser(User user) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		log.info(user);;
 		try{
 			String sql = "insert into users values(?,?,?,?)";
@@ -72,7 +73,7 @@ public class UserDaoImplementation implements UserDao {
 	@Override
 	public boolean userExists(String username) {
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		try {
 			String sql = "select username from users where username = ?";			
 			PreparedStatement ps;
@@ -97,7 +98,7 @@ public class UserDaoImplementation implements UserDao {
 	public boolean verifyPassword(String username, String password) {
 
 			Connection conn = null;
-			conn = cu.getConnection();
+			conn = pool.getConnection();
 			String sql = "select password from users where username = ?";
 			
 			try {
@@ -127,7 +128,7 @@ public class UserDaoImplementation implements UserDao {
 	public User getUser(String username) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method
@@ -151,7 +152,7 @@ public class UserDaoImplementation implements UserDao {
 	@Override
 	public boolean deleteUser(String username) {
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		try{
 			CallableStatement cs = conn.prepareCall("call delete_user(?)");	
 			cs.setString(1, username);
@@ -169,7 +170,7 @@ public class UserDaoImplementation implements UserDao {
 	public List<User> getAllUsers() {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			Statement stmt = conn.createStatement();
@@ -204,7 +205,7 @@ public class UserDaoImplementation implements UserDao {
 
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method

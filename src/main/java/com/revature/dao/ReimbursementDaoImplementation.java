@@ -12,11 +12,12 @@ import org.apache.log4j.Logger;
 import com.revature.enums.Status;
 import com.revature.model.Reimbursement;
 import com.revature.utils.ConnectionUtil;
+import com.revature.utils.TomcatConnectionPool;
 
 public class ReimbursementDaoImplementation implements ReimbursementDao {
 	
 	private static ReimbursementDaoImplementation reimbursementDao;
-	private static ConnectionUtil cu = ConnectionUtil.getInstance();
+	private static TomcatConnectionPool pool = TomcatConnectionPool.getInstance();
 	final static Logger log = Logger.getLogger(ReimbursementDaoImplementation.class);
 
 	private ReimbursementDaoImplementation() {
@@ -35,7 +36,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public boolean insertReimbursement(String username, double amount) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "insert into reimbursements values(new_reimbursement_id.nextval,?,?,?,?,?)";
@@ -60,7 +61,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public boolean deleteReimbursement(String name) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "delete from reimbursements where username = ?";
@@ -80,7 +81,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	@Override
 	public Reimbursement getReimbursement(int reimbursementId) {
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method
@@ -106,7 +107,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public List<Reimbursement> getAllReimbursements(String username) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "select * from reimbursements where username = ? order by reimbursement_id";
@@ -133,7 +134,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public List<Reimbursement> getAllPendingReimbursements() {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "select * from reimbursements where status='pending' order by reimbursement_id";
@@ -159,7 +160,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public List<Reimbursement> getAllResolvedReimbursements() {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "select * from reimbursements where status='declined' or status='approved' order by reimbursement_id";
@@ -185,7 +186,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public boolean updateReimbursement(int reimbursementId, String status, String manager) {
 		
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method
@@ -209,7 +210,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	@Override
 	public boolean updateUsernameReimbursement(String newUsername, String oldUsername) {
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method
@@ -233,7 +234,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	@Override
 	public int getMostRecentReimbursement() {
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			String sql = "select MAX(reimbursement_id) from reimbursements";
@@ -256,7 +257,7 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 	public boolean addImage(int id) {
 		// TODO Auto-generated method stub
 		Connection conn = null;
-		conn = cu.getConnection();
+		conn = pool.getConnection();
 		
 		try{
 			//never hardcode values in a method

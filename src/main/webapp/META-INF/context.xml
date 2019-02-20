@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>          
+          <Resource name="jdbc/Database"
+          global ="jdbc/Database"
+          auth="Container"
+          type="javax.sql.DataSource"
+          factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+          maxActive="100"
+          minIdle="10"
+          username="super"
+          password="superpass"
+          driverClassName="oracle.jdbc.OracleDriver"
+          url="jdbc:oracle:thin:@brockrds.copzpixsl3vn.us-east-1.rds.amazonaws.com:1521:Brockrds"/>
+</Context>
