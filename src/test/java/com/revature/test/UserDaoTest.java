@@ -32,7 +32,7 @@ public class UserDaoTest {
 	public void testGetUser() {
 		User testUser = UserDaoImplementation.getUserDao().getUser("super");
 		Assert.assertEquals("super", testUser.getUsername());
-		Assert.assertEquals("bsokevitz@gmail.com", testUser.getEmail());
+		Assert.assertEquals("fuksyr@gmail.com", testUser.getEmail());
 		Assert.assertEquals(25, testUser.getSuperuser());
 	}
 	

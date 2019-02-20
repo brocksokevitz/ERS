@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <link
@@ -20,7 +21,7 @@ body {
 
 <div style="margin:10% 0% 20% 0%">
 	<div class="container col-lg-4 offset-lg-4 jumbotron">
-		<form action="/ERS/login" method="POST">
+		<form action="http://localhost:8080/ERS/login" method="POST">
 			<div class="form-group centered">
 				<label for="username">Username</label> <input type="text"
 					name="username" class="form-control">

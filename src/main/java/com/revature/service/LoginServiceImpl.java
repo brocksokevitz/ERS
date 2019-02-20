@@ -47,13 +47,12 @@ public class LoginServiceImpl implements LoginService {
 		User attempting = null;
 		boolean successfulEdit = true;
 		boolean success = true;
-
+		
 		String uri = req.getRequestURI();
 
 		String pageName = uri.substring(uri.lastIndexOf("/")+1);
 		
 		log.info(pageName);
-		
 		if (req.getRequestURI().contains("userinfo")) {
 
 			attempting = loginService.getUser(String.valueOf(req.getSession().getAttribute("username")));
@@ -74,19 +73,18 @@ public class LoginServiceImpl implements LoginService {
 				loginService.uploadFile(filePath, req, id);
 				reimbursementService.addImage(id);
 				
-			}else if (req.getParameter("button").equals("login")) {
+			}else if(!req.getParameterMap().containsKey("button")) {
+				attempting= null;
+			} else if (req.getParameter("button").equals("login")) {
 				attempting = loginService.attemptAuthentication(username, password);
 			}else if (req.getParameter("button").equals("logout")) {
 				req.getSession().invalidate();
 				req.logout();
-				log.info(req.getSession().getAttribute("username"));
+				req.getSession().setAttribute("username", "invalid");
 				resp.sendRedirect(req.getContextPath());
 				return "/index?faces-redirect=true";
 			} else if (req.getParameter("button").equals("registerSubmit")) {
-				User user = loginService.insertUser(username, email, password);
-				if(user == null) {
-					success = false;
-				}
+				attempting = loginService.insertUser(username, email, password);
 			} else if (req.getParameter("button").equals("submit reimbursement")) {
 				
 				final double amount = Double.parseDouble(req.getParameter("amount"));		
@@ -124,7 +122,7 @@ public class LoginServiceImpl implements LoginService {
 			} else if (req.getParameter("button").equals("submit edit")) {
 
 				attempting = loginService
-						.attemptAuthentication(String.valueOf(req.getSession().getAttribute("username")), password);
+						.attemptAuthentication(String.valueOf(req.getSession().getAttribute("username")), req.getParameter("password"));
 
 				if(!username.equals(req.getSession().getAttribute("username")) && loginService.userExists(username)) {
 					req.getSession().setAttribute("info", "username or email is taken");
@@ -137,25 +135,27 @@ public class LoginServiceImpl implements LoginService {
 
 					User updatedUser = null;
 					
-					if(req.getParameter("new_password") != null) {
-						updatedUser = new User(username, email, req.getParameter("new_password"),
+					if(req.getParameter("new_password") != null && req.getParameter("new_password").length()>0) {
+						updatedUser = new User(req.getParameter("username"), req.getParameter("email"), req.getParameter("new_password"),
 								attempting.getSuperuser());
 					}else {
-						updatedUser = new User(username, email, password,
+						updatedUser = new User(req.getParameter("username"), req.getParameter("email"), req.getParameter("password"),
 								attempting.getSuperuser());
 					}
 					
 					log.info(updatedUser);
+					
 					attempting = loginService.updateUser(updatedUser,
 							String.valueOf(req.getSession().getAttribute("username")));
 
 					if (attempting == null) {
 						req.getSession().setAttribute("info", "username or email already exists");
 						successfulEdit = false;
-						attempting = loginService.getUser(String.valueOf(req.getSession().getAttribute("username")));
-					} else {
+						attempting = loginService.getUser(updatedUser.getUsername());
+					} else {						
 						reimbursementService.updateUsernameReimbursements(username,
 								String.valueOf(req.getSession().getAttribute("username")));
+						attempting = loginService.getUser(updatedUser.getUsername());
 					}
 
 				}
@@ -174,8 +174,10 @@ public class LoginServiceImpl implements LoginService {
 				User user = loginService.insertUser(username, email, password);
 				attempting = loginService.getUser(String.valueOf(req.getSession().getAttribute("username")));
 				if(user != null) {
-				String body = "Username: " + user.getUsername()+ "Password: " + user.getPassword();
-				loginService.sendEmail(user, attempting, new Reimbursement(), body);
+				String body = "Username: " + user.getUsername()+ "     Password: " + user.getPassword();
+				Reimbursement reimbursement = new Reimbursement();
+				reimbursement.setUsername("new user");
+				loginService.sendEmail(user, attempting, reimbursement, body);
 				}else {
 					success = false;
 				}
@@ -220,23 +222,20 @@ public class LoginServiceImpl implements LoginService {
 					}
 				}
 			} else {
-				if (req.getParameter("button").equals("register")) {
-					req.getRequestDispatcher("register.jsp").forward(req, resp);
-				} else if (req.getParameter("button").equals("logout") || req.getParameter("button").equals("exit")) {
+				if(!req.getParameterMap().containsKey("button")){
 					req.getRequestDispatcher("index.jsp").forward(req, resp);
-				} else if(req.getParameter("button").equals("registerSubmit")){
-					if(success) {
-						req.getRequestDispatcher("index.jsp").forward(req, resp);
-					}else {
-						req.getRequestDispatcher("failedRegister.jsp").forward(req, resp);
-					}
-				}else {
-					log.info(req.getParameter("button"));
+				}else if (req.getParameter("button").equals("register")) {
+					req.getRequestDispatcher("register.jsp").forward(req, resp);
+				} else if (req.getParameter("button").equals("logout") || req.getParameter("button").equals("exit")
+						|| req.getParameter("button").equals("registerSubmit")) {
+					req.getRequestDispatcher("index.jsp").forward(req, resp);
+				} else {
 					resp.setStatus(400);
 					req.getRequestDispatcher("incorrectformindex.jsp").forward(req, resp);
 				}
 			}
 		}
+		
 		return attempting;
 	}
 
@@ -280,6 +279,10 @@ public class LoginServiceImpl implements LoginService {
 	public boolean sendEmail(User employee, User manager, Reimbursement reimbursement, String body) {
 		String title = "Reimbursement" + reimbursement.getReimbursement_id();
 		
+		if(reimbursement.getUsername().equals("new user")) {
+			title = "new user";
+		}
+		
 		String to = employee.getEmail();
 
 		Properties props = new Properties();
@@ -322,6 +325,8 @@ public class LoginServiceImpl implements LoginService {
 		final int maxMemSize = 4 * 1024;
 		File file;
 
+		log.info(System.getProperty("user.home"));
+		filePath = System.getProperty("user.home") + filePath;
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 
 		// maximum size that will be stored in memory

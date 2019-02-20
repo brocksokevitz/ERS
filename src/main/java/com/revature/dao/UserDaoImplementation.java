@@ -212,6 +212,8 @@ public class UserDaoImplementation implements UserDao {
 			String sql = "update users set username = ?, email=?, password=? where username=?";
 			String output = "";
 			CallableStatement cs = conn.prepareCall("{? = call encrypt_password(?,?)}");	
+			log.info("new user" + user.getUsername());
+			log.info("new pass" + user.getPassword());
 			cs.setString(2, user.getUsername());
 			cs.setString(3, user.getPassword());
 			cs.registerOutParameter(1, Types.VARCHAR);

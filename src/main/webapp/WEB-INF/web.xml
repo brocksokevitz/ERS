@@ -7,7 +7,7 @@
    <context-param> 
       <param-name>file-upload</param-name> 
       <param-value>
-         C:\Users\Brock Sokevitz\Desktop\PACE\src\main\webapp\images\
+         \Desktop\PACE\src\main\webapp\images\
       </param-value> 
    </context-param>
   

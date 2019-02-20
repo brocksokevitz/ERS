@@ -75,7 +75,7 @@ body {
 </div>
 <script>
 	
-		window.onload = function() {			
+		window.onload = function() {				
 
 			var myButton = document.getElementById('submit');
 			var myForm = document.getElementById('myForm');

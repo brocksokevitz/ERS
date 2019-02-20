@@ -221,11 +221,11 @@ public class ReimbursementDaoImplementation implements ReimbursementDao {
 			
 			ResultSet results = ps.executeQuery();
 			
-			while (results.next()) {
+			if (results.next()) {
 				return true;				
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 		return false;
 		

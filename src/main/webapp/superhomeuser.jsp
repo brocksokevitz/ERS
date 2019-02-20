@@ -140,7 +140,7 @@ body {
 						var a = document.createElement('a');
 						tn = document.createTextNode('receipt');
 						a.appendChild(tn);
-						a.href="javascript:window.open('"+"/ERS/images/"+k+".png"+"','mypopuptitle','width=600,height=400')"
+						a.href="javascript:window.open('"+"/ERS/images/"+data[i].reimbursement_id+".png"+"','mypopuptitle','width=600,height=400')"
 						imagecol.appendChild(a);
 					}
 					
