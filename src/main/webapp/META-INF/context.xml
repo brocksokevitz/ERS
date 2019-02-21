@@ -5,7 +5,7 @@
           auth="Container"
           type="javax.sql.DataSource"
           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-          maxActive="100"
+          maxActive="1000"
           maxIdle="10"
           minIdle="10"
           username="super"
