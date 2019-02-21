@@ -6,9 +6,11 @@
           type="javax.sql.DataSource"
           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
           maxActive="100"
+          maxIdle="10"
           minIdle="10"
           username="super"
           password="superpass"
           driverClassName="oracle.jdbc.OracleDriver"
-          url="jdbc:oracle:thin:@brockrds.copzpixsl3vn.us-east-1.rds.amazonaws.com:1521:Brockrds"/>
+          url="jdbc:oracle:thin:@brockrds.copzpixsl3vn.us-east-1.rds.amazonaws.com:1521:Brockrds"
+          closeMethod="close"/>
 </Context>
