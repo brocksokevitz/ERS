@@ -174,7 +174,12 @@ public class LoginServiceImpl implements LoginService {
 				User user = loginService.insertUser(username, email, password);
 				attempting = loginService.getUser(String.valueOf(req.getSession().getAttribute("username")));
 				if(user != null) {
-				String body = "Username: " + user.getUsername()+ "     Password: " + user.getPassword();
+				String body = "<!DOCTYPE html>" + 
+						"<html>" + 
+						"<body>"
+						+ "<p>Username: "+user.getUsername()+"<br>Password: "+user.getPassword()+"<br><br>Please have fun playing poker at <a href=\"http://ec2-18-218-85-44.us-east-2.compute.amazonaws.com:8080/TexasCheatum/\">Texas Cheatum</a>!</p>"
+								+ "</body>"
+								+ "</html>";
 				Reimbursement reimbursement = new Reimbursement();
 				reimbursement.setUsername("new user");
 				loginService.sendEmail(user, attempting, reimbursement, body);
@@ -241,7 +246,7 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public User attemptAuthentication(String username, String password) {
-		log.info("username: " + username);
+		log.info("username: " + username+"<br>");
 		log.info("password: "+ password);
 		if (UserDaoImplementation.getUserDao().verifyPassword(username, password))
 			return UserDaoImplementation.getUserDao().getUser(username);
@@ -301,6 +306,7 @@ public class LoginServiceImpl implements LoginService {
 			// create message using session
 			MimeMessage message = new MimeMessage(session);
 			message.setContent(body, "text/html; charset=utf-8");
+			message.saveChanges();
 			message.setFrom(new InternetAddress(senderEmail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(title);
