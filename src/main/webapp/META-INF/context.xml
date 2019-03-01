@@ -11,6 +11,6 @@
           username="super"
           password="superpass"
           driverClassName="oracle.jdbc.OracleDriver"
-          url="jdbc:oracle:thin:@brockrds.copzpixsl3vn.us-east-1.rds.amazonaws.com:1521:Brockrds"
+          url="jdbc:oracle:thin:@brockrds2.copzpixsl3vn.us-east-1.rds.amazonaws.com:1521:Brockrds"
           closeMethod="close"/>
 </Context>
